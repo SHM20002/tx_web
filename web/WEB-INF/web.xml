@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+           version="2.5">
+
+    <!--首页，欢迎页面-->
+    <welcome-file-list>
+        <welcome-file>/login.jsp</welcome-file>
+        <welcome-file>/index.html</welcome-file>
+    </welcome-file-list>
+
+    <!--配置乱码过滤器-->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>cn.tedu.filter.GenericEncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--自动登录过滤器-->
+    <filter>
+        <filter-name>permissionFilter</filter-name>
+        <filter-class>cn.tedu.filter.PermissionFilter</filter-class>
+        <init-param>
+            <param-name>notCheckUri</param-name>
+            <param-value>
+                /createVerifyImage.do,
+                /exit.do,
+                /userLoginServlet.do,
+                /Download.do,
+                /error.jsp,
+                /AutoLogin.do
+            </param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>permissionFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+    <!--权限-->
+    <filter>
+        <filter-name>roleCheckFilter</filter-name>
+        <filter-class>cn.tedu.filter.RoleFilter</filter-class>
+        <init-param>
+            <param-name>roleCheckUri</param-name>
+            <param-value>/userManager.do</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>roleCheckFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+
+    <!--用户登录-->
+    <servlet>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <servlet-class>cn.tedu.servlet.UserLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <url-pattern>/userLoginServlet.do</url-pattern>
+    </servlet-mapping>
+
+    <!--验证码-->
+    <servlet>
+        <servlet-name>createVerifyImageServlet</servlet-name>
+        <servlet-class>cn.tedu.servlet.CreateVerifyImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>createVerifyImageServlet</servlet-name>
+        <url-pattern>/createVerifyImage.do</url-pattern>
+    </servlet-mapping>
+
+    <!--安全退出-->
+    <servlet>
+        <servlet-name>exitServlet</servlet-name>
+        <servlet-class>cn.tedu.servlet.ExitServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>exitServlet</servlet-name>
+        <url-pattern>/exit.do</url-pattern>
+    </servlet-mapping>
+
+    <!--跳转到下载页面-->
+    <servlet>
+        <servlet-name>toDownloadServlet</servlet-name>
+        <servlet-class>cn.tedu.servlet.ToDownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>toDownloadServlet</servlet-name>
+        <url-pattern>/GetDownloadList.do</url-pattern>
+    </servlet-mapping>
+    
+    <!--下载-->
+    <servlet>
+        <servlet-name>downloadServlet</servlet-name>
+        <servlet-class>cn.tedu.servlet.DownloadController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>downloadServlet</servlet-name>
+        <url-pattern>/Download.do</url-pattern>
+    </servlet-mapping>
+
+    <!--自动登录-->
+    <servlet>
+        <servlet-name>AutoLoginServlet</servlet-name>
+        <servlet-class>cn.tedu.servlet.AutoLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AutoLoginServlet</servlet-name>
+        <url-pattern>/AutoLogin.do</url-pattern>
+    </servlet-mapping>
+</web-app>
